@@ -11,15 +11,20 @@ namespace TSP.ModelTSP
         private LocationGA _startLocation;
 		private KeyValuePair<LocationGA[], double>[] _populationWithDistances;
         private int _populationCount;
-        int _maxTime;
-
+        private int _maxTime;
+        private double _totalDistance;
+        
+        public double TotalDistance
+        {
+            get { return _totalDistance; }
+        }
         public GeneticAlgorithm(int popalationCount, int maxTime)
         {
             this._populationCount = popalationCount;
             this._maxTime = maxTime;
         }
 
-        public Location[] Soulition(Cities cities)
+        public Location[] Solution(Cities cities)
         {
 
             //// для преобразования Location к LocationGA
@@ -54,7 +59,8 @@ namespace TSP.ModelTSP
                         _bestSolutionSoFar = newSolution;
                     }
             }
-            return (Location[])_bestSolutionSoFar;
+            _totalDistance = LocationGA.GetTotalDistance((LocationGA)_randomLocations[0], _bestSolutionSoFar.Select(x => new LocationGA(x)).ToArray());
+            return _bestSolutionSoFar;
 
         }
         private void GoGeneticAlgorithm(LocationGA startLocation, LocationGA[] destinations )

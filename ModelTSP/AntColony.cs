@@ -21,7 +21,12 @@ namespace TSP.ModelTSP
         double Q;   // pheromone increase factor
         int numAnts;
         int maxTime;
+        private double _totalDistance;
 
+        public double TotalDistance
+        {
+            get { return _totalDistance; }
+        }
         public AntColony(int alpha, int beta, double rho, double Q, int numAnts, int maxTime)
         {
             this.alpha = alpha;
@@ -32,10 +37,10 @@ namespace TSP.ModelTSP
             this.maxTime = maxTime;
         }
 
-        public int[] Soulition(Cities cities)
+        public int[] Solution(Cities cities)
         {
             int[][] ants = InitAnts(numAnts, cities.NumCities); // initialize ants to random trails
-            int[][] dists = cities.GetArrayDistances();
+            double[][] dists = cities.GetArrayDistances();
             int[] bestTrail = BestTrail(ants, dists); // determine the best initial trail
             double bestLength = Length(bestTrail, dists); // the length of the best trail
             double[][] pheromones = InitPheromones(cities.NumCities);
@@ -54,6 +59,7 @@ namespace TSP.ModelTSP
                 }
                 ++time;
             }
+            _totalDistance = cities.GetTotalDistance(bestTrail);
             return bestTrail;
         }
 
@@ -98,7 +104,7 @@ namespace TSP.ModelTSP
             throw new Exception("Target not found in IndexOfTarget");
         }
 
-        double Length(int[] trail, int[][] dists) // total length of a trail
+        double Length(int[] trail, double[][] dists) // total length of a trail
         {
             double result = 0.0;
             for (int i = 0; i < trail.Length - 1; ++i)
@@ -108,7 +114,7 @@ namespace TSP.ModelTSP
 
         // -------------------------------------------------------------------------------------------- 
 
-        int[] BestTrail(int[][] ants, int[][] dists) // best trail has shortest total length
+        int[] BestTrail(int[][] ants, double[][] dists) // best trail has shortest total length
         {
             double bestLength = Length(ants[0], dists);
             int idxBestLength = 0;
@@ -142,7 +148,7 @@ namespace TSP.ModelTSP
 
         // --------------------------------------------------------------------------------------------
 
-        void UpdateAnts(int[][] ants, double[][] pheromones, int[][] dists)
+        void UpdateAnts(int[][] ants, double[][] pheromones, double[][] dists)
         {
             int numCities = pheromones.Length;
             for (int k = 0; k < ants.Length; ++k)
@@ -153,7 +159,7 @@ namespace TSP.ModelTSP
             }
         }
 
-        int[] BuildTrail(int k, int start, double[][] pheromones, int[][] dists)
+        int[] BuildTrail(int k, int start, double[][] pheromones, double[][] dists)
         {
             int numCities = pheromones.Length;
             int[] trail = new int[numCities];
@@ -170,7 +176,7 @@ namespace TSP.ModelTSP
             return trail;
         }
 
-        int NextCity(int k, int cityX, bool[] visited, double[][] pheromones, int[][] dists)
+        int NextCity(int k, int cityX, bool[] visited, double[][] pheromones, double[][] dists)
         {
             // for ant k (with visited[]), at nodeX, what is next node in trail?
             double[] probs = MoveProbs(k, cityX, visited, pheromones, dists);
@@ -187,7 +193,7 @@ namespace TSP.ModelTSP
             throw new Exception("Failure to return valid city in NextCity");
         }
 
-        double[] MoveProbs(int k, int cityX, bool[] visited, double[][] pheromones, int[][] dists)
+        double[] MoveProbs(int k, int cityX, bool[] visited, double[][] pheromones, double[][] dists)
         {
             // for ant k, located at nodeX, with visited[], return the prob of moving to each city
             int numCities = pheromones.Length;
@@ -218,7 +224,7 @@ namespace TSP.ModelTSP
 
         // --------------------------------------------------------------------------------------------
 
-        void UpdatePheromones(double[][] pheromones, int[][] ants, int[][] dists)
+        void UpdatePheromones(double[][] pheromones, int[][] ants, double[][] dists)
         {
             for (int i = 0; i < pheromones.Length; ++i)
             {
@@ -264,7 +270,7 @@ namespace TSP.ModelTSP
 
         // --------------------------------------------------------------------------------------------
 
-        double Distance(int cityX, int cityY, int[][] dists)
+        double Distance(int cityX, int cityY, double[][] dists)
         {
             return dists[cityX][cityY];
         }

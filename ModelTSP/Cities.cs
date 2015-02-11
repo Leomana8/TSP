@@ -20,18 +20,18 @@ namespace TSP.ModelTSP
             get { return y; }
             set { y = value; }
         }
-        public int GetDistance(Location other)
+        public double GetDistance(Location other)
         {
             int diffX = X - other.X;
             int diffY = Y - other.Y;
-            return (int)Math.Sqrt(diffX * diffX + diffY * diffY);
+            return Math.Sqrt(diffX * diffX + diffY * diffY);
         }
 
     };
     class Cities
     {
         int _numCities;
-        int[][] _dists;
+        double[][] _dists;
         Location[] _locations;
         public Location GetLocation(int city)
         {
@@ -53,9 +53,9 @@ namespace TSP.ModelTSP
             {
                 _numCities = 3;
             }
-            _dists = new int[_numCities][];
+            _dists = new double[_numCities][];
             for (int i = 0; i < _dists.Length; ++i)
-                _dists[i] = new int[_numCities];
+                _dists[i] = new double[_numCities];
             _locations = new Location[_numCities];
         }
 
@@ -74,18 +74,40 @@ namespace TSP.ModelTSP
             {
                 for (int j = i + 1; j < _numCities; ++j)
                 {
-                    int d = _locations[i].GetDistance(_locations[j]);
+                    double d = _locations[i].GetDistance(_locations[j]);
                     _dists[i][j] = d;
                     _dists[j][i] = d;
                 }
             }
-
         }
-        public int GetDistance(int city1, int city2)
+
+        public double GetDistance(int city1, int city2)
         {
             return _dists[city1][city2];
         }
-        public int[][] GetArrayDistances()
+        public double GetTotalDistance(int[] cities)
+        {
+            //рассчет замкнутого маршрута
+            if (cities.Length != _numCities)
+                // ошибка
+                return 0;
+            double result = 0;
+            int actual = 0;
+            int next = 0;
+            int i = 0;
+            for (; i < _numCities - 1; i++)
+            {
+                actual = cities[i];
+                next = cities[i + 1];
+
+                var distance = GetDistance(actual, next);
+                result += distance;
+            }
+            result += GetDistance(next, cities[0]);
+            return result;
+
+        }
+        public double[][] GetArrayDistances()
         {
             return _dists;
         }

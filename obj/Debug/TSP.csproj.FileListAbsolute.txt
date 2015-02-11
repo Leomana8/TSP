@@ -12,3 +12,17 @@ D:\Docyment\prog\Задача коммивояжера\TSP\obj\Debug\TSP.csproj.
 D:\Docyment\prog\Задача коммивояжера\TSP\obj\Debug\TSP.exe
 D:\Docyment\prog\Задача коммивояжера\TSP\obj\Debug\TSP.pdb
 D:\Docyment\prog\Задача коммивояжера\TSP\obj\Debug\TSP_MarkupCompile.lref
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\bin\Debug\TSP.exe.config
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.exe
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.pdb
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\bin\Debug\TSP.exe
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\bin\Debug\TSP.pdb
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.csprojResolveAssemblyReference.cache
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\MainWindow.g.cs
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\App.g.cs
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP_MarkupCompile.cache
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP_MarkupCompile.lref
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\MainWindow.baml
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.g.resources
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.Properties.Resources.resources
+D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.csproj.GenerateResource.Cache

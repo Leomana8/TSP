@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TSP.ModelTSP;
 
+using System.Diagnostics;
+
 namespace TSP
 {
     /// <summary>
@@ -23,6 +25,7 @@ namespace TSP
     {
         Grid[] graphs;
         Cities cities;
+        Stack <TextBox> errorTB;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,6 +35,7 @@ namespace TSP
             graphs[2] = graph3;
             graphs[3] = graph4;
             graphs[4] = graph5;
+            errorTB = new Stack<TextBox>();
             
         }
         public void DrawPoints(object sender, RoutedEventArgs e)
@@ -149,15 +153,39 @@ namespace TSP
             graph.Children.Add(myPath);
         }
 
+        public void ClearTextBox()
+        {
+            while (errorTB.Count > 0)
+            {
+                errorTB.Pop().Background = Brushes.White;
+            }
+        }
+
         public void Calculate(object sender, RoutedEventArgs e)
         {
+            ClearTextBox();
             CalculateBF();
             CalculateACO();
             CalculateGA();
+            CalculateSA();
         }
         public void CalculateBF()
         {
-
+            decimal maxTour;
+            if (!Decimal.TryParse(textB_maxTour.Text, out maxTour))
+            {
+                textB_maxTour.Background = Brushes.Coral;
+                errorTB.Push(textB_maxTour);
+                return;
+            }
+            BruteForce algorithm = new BruteForce(maxTour);
+            Stopwatch time = new Stopwatch();
+            time.Start();
+                int[] solve = algorithm.Solution(cities);
+            time.Stop();
+            DrawLines(solve, graphs[0]);
+            timeBF.Content = time.ElapsedMilliseconds.ToString();
+            lengthBF.Content = algorithm.TotalDistance.ToString();
         }
         public void CalculateACO()
         {
@@ -165,40 +193,52 @@ namespace TSP
             if (!Int32.TryParse(textB_alpha.Text, out alpha))
             {
                 textB_alpha.Background = Brushes.Coral;
+                errorTB.Push(textB_alpha);
                 return;
             }
             int beta;
             if (!Int32.TryParse(textB_beta.Text, out beta))
             {
                 textB_beta.Background = Brushes.Coral;
+                errorTB.Push(textB_beta);
                 return;
             }
             double rho;
             if (!Double.TryParse(textB_rho.Text, out rho))
             {
                 textB_rho.Background = Brushes.Coral;
+                errorTB.Push(textB_rho);
                 return;
             }
             double Q;
             if (!Double.TryParse(textB_Q.Text, out Q))
             {
                 textB_Q.Background = Brushes.Coral;
+                errorTB.Push(textB_Q);
                 return;
             }
             int numAnts;
             if (!Int32.TryParse(textB_nAnts.Text, out numAnts))
             {
                 textB_nAnts.Background = Brushes.Coral;
+                errorTB.Push(textB_nAnts);
                 return;
             }
             int maxTime;
             if (!Int32.TryParse(textB_time.Text, out maxTime))
             {
                 textB_time.Background = Brushes.Coral;
+                errorTB.Push(textB_time);
                 return;
             }
             AntColony algorithm = new AntColony(alpha, beta, rho, Q, numAnts, maxTime);
-            DrawLines(algorithm.Soulition(cities), graphs[1]);
+            Stopwatch time = new Stopwatch();
+            time.Start();
+                int[] solve = algorithm.Solution(cities);
+            time.Stop();
+            DrawLines(solve, graphs[1]);
+            timeAC.Content = time.ElapsedMilliseconds.ToString();
+            lengthAC.Content = algorithm.TotalDistance.ToString();
         }
 
         public void CalculateGA()
@@ -207,16 +247,57 @@ namespace TSP
             if (!Int32.TryParse(textB_numPopulate.Text, out numPopulation))
             {
                 textB_numPopulate.Background = Brushes.Coral;
+                errorTB.Push(textB_numPopulate);
                 return;
             }
             int maxTime;
             if (!Int32.TryParse(textB_timeGA.Text, out maxTime))
             {
                 textB_time.Background = Brushes.Coral;
+                errorTB.Push(textB_timeGA);
                 return;
             }
             GeneticAlgorithm algorithm = new GeneticAlgorithm(numPopulation, maxTime);
-            DrawLines(algorithm.Soulition(cities), graphs[2]);
+            Stopwatch time = new Stopwatch();
+            time.Start();
+                Location[] solve = algorithm.Solution(cities);
+            time.Stop();
+            DrawLines(solve, graphs[2]);
+            timeGA.Content = time.ElapsedMilliseconds.ToString();
+            lengthGA.Content = algorithm.TotalDistance.ToString();
+        }
+
+        public void CalculateSA()
+        {
+            double temperature;
+            if (!Double.TryParse(textB_temperature.Text, out temperature))
+            {
+                textB_temperature.Background = Brushes.Coral;
+                errorTB.Push(textB_temperature);
+                return;
+            }
+            double absTemperature;
+            if (!Double.TryParse(textB_absoluteTemperature.Text, out absTemperature))
+            {
+                textB_absoluteTemperature.Background = Brushes.Coral;
+                errorTB.Push(textB_absoluteTemperature);
+                return;
+            }
+            double coolingRate;
+            if (!Double.TryParse(textB_coolingRate.Text, out coolingRate))
+            {
+                textB_coolingRate.Background = Brushes.Coral;
+                errorTB.Push(textB_coolingRate);
+                return;
+            }
+            SimulatedAnnealing algorithm = new SimulatedAnnealing(temperature, absTemperature, coolingRate);
+            Stopwatch time = new Stopwatch();
+            time.Start();
+                int[] solve = algorithm.Solution(cities);
+            time.Stop();
+            DrawLines(solve, graphs[3]);
+            timeSA.Content = time.ElapsedMilliseconds.ToString();
+            lengthSA.Content = algorithm.TotalDistance.ToString();
         }
 
     } // Class MainWindow
