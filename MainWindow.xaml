@@ -1,0 +1,82 @@
+﻿<Window x:Class="TSP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lib="clr-namespace:TSP"
+        Title="Задача коммивояжера" Height="839.268" Width="1351.973">
+    <Grid x:Name="g" Margin="0,0,0,-4">
+        <TextBox x:Name="textB_countCities" HorizontalAlignment="Left" Height="23" Margin="131,10,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="45" UndoLimit="3" FontSize="16"/>
+        <Button Click="DrawPoints" Content="Построить" Height="23" HorizontalAlignment="Left" Margin="212,10,0,0" Name="button_random" VerticalAlignment="Top" Width="75" />
+        <!--<ScrollViewer HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+       -->
+        <WrapPanel  Background="LightBlue" Margin="10,59,0,207" Width="1334" UseLayoutRounding="False" VerticalAlignment="Top">
+            <Separator Width="1350" Height="10" Background="{x:Null}" />
+            <Separator Width="22" Background="{x:Null}" />
+            <Label Content="Полный перебор" Height="40" Width="262" FontSize="16" />
+            <Label Content="Муравьиный алгоритм" Height="40" Width="262" FontSize="16"/>
+            <Label Content="Генетический  алгоритм" Height="40" Width="262" FontSize="16" />
+            <Label Content="Метод имитации и отжига" Height="40" Width="262" FontSize="16" />
+            <Label Content="Метод ветвей и границ" Height="40" Width="262" FontSize="16" />
+            <Separator Width="22" Background="{x:Null}" />
+            <Grid  x:Name="graph1" Height="240" Width="240" Background="#FFC8E8C4" />
+            <Separator Width="22" Background="{x:Null}" />
+            <Grid  x:Name="graph2"  Height="240" Width="240" Background="#FFC8E8C4" >
+            </Grid>
+            <Separator Width="22" Background="{x:Null}" />
+            <Grid  x:Name="graph3"  Height="240" Width="240" Background="#FFC8E8C4" >
+            </Grid>
+            <Separator Width="22" Background="{x:Null}" />
+            <Grid  x:Name="graph4"  Height="240" Width="240" Background="#FFC8E8C4" >
+            </Grid>
+            <Separator Width="22" Background="{x:Null}" />
+            <Grid  x:Name="graph5"  Height="240" Width="240" Background="#FFC8E8C4" >
+            </Grid>
+            
+            <Separator Width="22" Background="{x:Null}" />
+            <Separator Width="22" Background="{x:Null}" />
+            <StackPanel Height="160" VerticalAlignment="Top" Width="140">
+                <Label Content="= α" Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= β  " Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= rho " Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= Q  " Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= число муравьев" Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= время" Height="27" FlowDirection="RightToLeft" />
+            </StackPanel>
+            <StackPanel  HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="99">
+                    <TextBox x:Name="button1" Height="27" TextWrapping="Wrap" Text="3"/>
+                    <TextBox x:Name="button2" Height="27" TextWrapping="Wrap" Text="2"/>
+                    <TextBox x:Name="button3" Height="27" TextWrapping="Wrap" Text="0,01"/>
+                    <TextBox x:Name="button4" Height="27" TextWrapping="Wrap" Text="2,0" HorizontalAlignment="Right" Width="83"/>
+                    <TextBox x:Name="button5" Height="27" TextWrapping="Wrap" Text="4"/>
+                    <TextBox x:Name="button6" Height="27" TextWrapping="Wrap" Text="1000"/>
+                </StackPanel>
+            <Separator Width="22" Background="{x:Null}" />
+            <StackPanel Height="160" VerticalAlignment="Top" Width="140">
+                <Label Content="= α" Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= β  " Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= rho " Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= Q  " Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= число муравьев" Height="27" FlowDirection="RightToLeft" />
+                <Label Content="= время" Height="27" FlowDirection="RightToLeft" />
+            </StackPanel>
+            <StackPanel  HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="99">
+                <TextBox x:Name="textB_alpha" Height="27" TextWrapping="Wrap" Text="3"/>
+                <TextBox x:Name="textB_beta" Height="27" TextWrapping="Wrap" Text="2"/>
+                <TextBox x:Name="textB_rho" Height="27" TextWrapping="Wrap" Text="0,01"/>
+                <TextBox x:Name="textB_Q" Height="27" TextWrapping="Wrap" Text="2,0" HorizontalAlignment="Right" Width="83"/>
+                <TextBox x:Name="textB_nAnts" Height="27" TextWrapping="Wrap" Text="4"/>
+                <TextBox x:Name="textB_time" Height="27" TextWrapping="Wrap" Text="1000"/>
+            </StackPanel>
+                <Separator Width="22" Background="{x:Null}" />
+                <StackPanel Height="160" VerticalAlignment="Top" Width="140">
+                    <Label Content="= число популяции" Height="27" FlowDirection="RightToLeft" />
+                    <Label Content="= время" Height="27" FlowDirection="RightToLeft" />
+                </StackPanel>
+                <StackPanel  HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="99">
+                    <TextBox x:Name="textB_numPopulate" Height="27" TextWrapping="Wrap" Text="114"/>
+                    <TextBox x:Name="textB_timeGA" Height="27" TextWrapping="Wrap" Text="1000"/>
+                </StackPanel>
+            </WrapPanel>
+        <!--></ScrollViewer> -->
+        <Button x:Name="button_Calculate" Click="Calculate" Content="Расчет" Height="23" HorizontalAlignment="Left" Margin="672,549,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.107,-1.217" IsEnabled="False" />
+    </Grid>
+</Window>
