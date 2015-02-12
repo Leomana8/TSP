@@ -8,6 +8,7 @@ namespace TSP.ModelTSP
 {
     public class Location
     {
+
         int x;
         public int X
         {

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using TSP.ModelTSP;
 
 using System.Diagnostics;
+using System.Threading;
 
 namespace TSP
 {
@@ -26,6 +27,7 @@ namespace TSP
         Grid[] graphs;
         Cities cities;
         Stack <TextBox> errorTB;
+        Thread calc;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,6 +38,7 @@ namespace TSP
             graphs[3] = graph4;
             graphs[4] = graph5;
             errorTB = new Stack<TextBox>();
+            calc = new Thread(CalculateInThread);
             
         }
         public void DrawPoints(object sender, RoutedEventArgs e)
@@ -69,39 +72,6 @@ namespace TSP
                 graphs[i].Children.Add(myPath[i]);
             }
             button_Calculate.IsEnabled = true;
-
-            /*
-                        EllipseGeometry myEllipseGeometry = new EllipseGeometry();
-                        myEllipseGeometry.Center = new Point(50, 50);
-                        myEllipseGeometry.RadiusX = 50;
-                        myEllipseGeometry.RadiusY = 50;
-           
-                        Path myPath = new Path();
-                        SolidColorBrush mySolidColorBrush = new SolidColorBrush();
-                        myPath.Fill = Brushes.Plum;
-                        myPath.Stroke = Brushes.Black;
-                        // Create the line geometry to add to the Path
-                        LineGeometry myLineGeometry = new LineGeometry();
-                        myLineGeometry.StartPoint = new Point(10, 10);
-                        myLineGeometry.EndPoint = new Point(50, 30);
-
-                        // Create a rectangle geometry to add to the Path
-                        RectangleGeometry myRectGeometry = new RectangleGeometry();
-                        myRectGeometry.Rect = new Rect(0, 0, 100, 30);
-
-                        // Add all the geometries to a GeometryGroup.
-                        GeometryGroup myGeometryGroup = new GeometryGroup();
-                        myGeometryGroup.Children.Add(myLineGeometry);
-                        myGeometryGroup.Children.Add(myEllipseGeometry);
-                        //myGeometryGroup.Children.Add(myRectGeometry);
-
-                        myPath.Data = myGeometryGroup;
-                        graph2.Children.Add(myPath);
-                        Path myPath1 = new Path();
-                        myPath1.Fill = Brushes.Purple;
-                        myPath1.Data = myRectGeometry;
-                        graph2.Children.Add(myPath1);
-             */
         } // DrawPoints
 
         public void DrawLines(int[] trail, Grid graph)
@@ -164,15 +134,22 @@ namespace TSP
         public void Calculate(object sender, RoutedEventArgs e)
         {
             ClearTextBox();
+            //calc.Start();
+            CalculateInThread();
+        }
+        public void CalculateInThread()
+        {
             CalculateBF();
             CalculateACO();
             CalculateGA();
             CalculateSA();
+            CalculateBB();
         }
         public void CalculateBF()
         {
             decimal maxTour;
-            if (!Decimal.TryParse(textB_maxTour.Text, out maxTour))
+            string tb = textB_maxTour.Text;
+            if (!Decimal.TryParse(tb, out maxTour))
             {
                 textB_maxTour.Background = Brushes.Coral;
                 errorTB.Push(textB_maxTour);
@@ -185,7 +162,7 @@ namespace TSP
             time.Stop();
             DrawLines(solve, graphs[0]);
             timeBF.Content = time.ElapsedMilliseconds.ToString();
-            lengthBF.Content = algorithm.TotalDistance.ToString();
+            lengthBF.Content = algorithm.TotalDistance.ToString("F2");
         }
         public void CalculateACO()
         {
@@ -238,7 +215,7 @@ namespace TSP
             time.Stop();
             DrawLines(solve, graphs[1]);
             timeAC.Content = time.ElapsedMilliseconds.ToString();
-            lengthAC.Content = algorithm.TotalDistance.ToString();
+            lengthAC.Content = algorithm.TotalDistance.ToString("F2");
         }
 
         public void CalculateGA()
@@ -264,7 +241,7 @@ namespace TSP
             time.Stop();
             DrawLines(solve, graphs[2]);
             timeGA.Content = time.ElapsedMilliseconds.ToString();
-            lengthGA.Content = algorithm.TotalDistance.ToString();
+            lengthGA.Content = algorithm.TotalDistance.ToString("F2");
         }
 
         public void CalculateSA()
@@ -297,7 +274,26 @@ namespace TSP
             time.Stop();
             DrawLines(solve, graphs[3]);
             timeSA.Content = time.ElapsedMilliseconds.ToString();
-            lengthSA.Content = algorithm.TotalDistance.ToString();
+            lengthSA.Content = algorithm.TotalDistance.ToString("F2");
+        }
+
+        public void CalculateBB()
+        {
+            int maxTime;
+            if (!Int32.TryParse(textB_timeBB.Text, out maxTime))
+            {
+                textB_timeBB.Background = Brushes.Coral;
+                errorTB.Push(textB_timeBB);
+                return;
+            }
+            BranchAndBound algorithm = new BranchAndBound(maxTime);
+            Stopwatch time = new Stopwatch();
+            time.Start();
+            Location[] solve = algorithm.Solution(cities);
+            time.Stop();
+            DrawLines(solve, graphs[4]);
+            timeBB.Content = time.ElapsedMilliseconds.ToString();
+            lengthBB.Content = algorithm.TotalDistance.ToString("F2");
         }
 
     } // Class MainWindow
