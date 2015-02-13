@@ -2,13 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:lib="clr-namespace:TSP"
-        Title="Задача коммивояжера" Height="839.268" Width="1351.973">
+        Title="Задача коммивояжера" Height="745.268" Width="1351.973">
     <ScrollViewer HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" >
 
         <Grid x:Name="g">
-            <Label Content="Число городов" Height="40" FontSize="16" Margin="9,7,1209,766" />
-            <TextBox x:Name="textB_countCities" HorizontalAlignment="Left" Height="23" Margin="138,10,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="45" UndoLimit="3" FontSize="16"/>
-            <Button Click="DrawPoints" Content="Построить" Height="23" HorizontalAlignment="Left" Margin="212,10,0,0" Name="button_random" VerticalAlignment="Top" Width="75" />
+            <Label Content="Число городов" Height="40" FontSize="16" Margin="131,10,1088,763" />
+            <TextBox x:Name="textB_countCities" HorizontalAlignment="Left" Height="23" Margin="260,14,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="44" UndoLimit="3" FontSize="16"/>
+            <Button Click="DrawPoints" Content="Построить" Height="27" HorizontalAlignment="Left" Margin="334,12,0,0" Name="button_random" VerticalAlignment="Top" Width="87" FontSize="14" />
 
             <WrapPanel  Background="LightBlue" Margin="10,59,0,284" Width="1334" UseLayoutRounding="False">
                 <Separator Width="1350" Height="10" Background="{x:Null}" />
@@ -90,9 +90,9 @@
                 <Separator Width="22" Background="{x:Null}" />
 
                 <Separator Width="22" Height="2" Background="{x:Null}" />
-            </WrapPanel>
 
-            <Button x:Name="button_Calculate" Click="Calculate" Content="Расчет" Height="23" HorizontalAlignment="Left" Margin="672,549,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.107,-1.217" IsEnabled="False" />
+            </WrapPanel>
+            <Button x:Name="button_Calculate" Click="Calculate" Content="Расчет" Height="31" HorizontalAlignment="Left" Margin="628,549,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="-0.107,-1.217" IsEnabled="False" FontSize="16" FontFamily="Tunga" />
             <WrapPanel Width="1334" Margin="10,600,0,0" UseLayoutRounding="False" VerticalAlignment="Top" Height="72">
                 <Separator Width="22" Background="{x:Null}" />
                 <StackPanel Height="71" VerticalAlignment="Top" Width="165" >
@@ -140,7 +140,7 @@
                     <Label x:Name="timeBB" Height="27"/>
                 </StackPanel>
             </WrapPanel>
-           
+
             <WrapPanel Width="1334" Margin="10,600,0,0" UseLayoutRounding="False" VerticalAlignment="Top" Height="72">
                 <Separator Width="22" Background="{x:Null}" />
                 <Rectangle HorizontalAlignment="Left" Height="59" Stroke="#FFC8E8C4" VerticalAlignment="Top" Width="240" MinWidth="9" StrokeStartLineCap="Square" StrokeThickness="5"/>
@@ -153,6 +153,11 @@
                 <Separator Width="22" Background="{x:Null}" />
                 <Rectangle HorizontalAlignment="Left" Height="59" Stroke="#FFC8E8C4" VerticalAlignment="Top" Width="240" MinWidth="9" StrokeStartLineCap="Square" StrokeThickness="5"/>
             </WrapPanel>
-                   </Grid>
+            <ProgressBar x:Name="progressBF" Margin="33,585,1074,213" Background="White" IsIndeterminate="True" BorderThickness="0" Foreground="#FF9CDCB6"/>
+            <ProgressBar x:Name="progressACO" Margin="296,585,811,213" Background="White" IsIndeterminate="True" BorderThickness="0" Foreground="#FF9CDCB6"/>
+            <ProgressBar x:Name="progressGA" Margin="557,585,550,213" Background="White" IsIndeterminate="True" BorderThickness="0" Foreground="#FF9CDCB6"/>
+            <ProgressBar x:Name="progressSA" Margin="819,585,288,213" Background="White" IsIndeterminate="True" BorderThickness="0" Foreground="#FF9CDCB6"/>
+            <ProgressBar x:Name="progressBB" Margin="1081,585,26,213" Background="White" IsIndeterminate="True" BorderThickness="0" Foreground="#FF9CDCB6"/>
+        </Grid>
     </ScrollViewer>
 </Window>

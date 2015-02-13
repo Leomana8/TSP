@@ -16,6 +16,7 @@ using TSP.ModelTSP;
 
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Threading;
 
 namespace TSP
 {
@@ -26,8 +27,10 @@ namespace TSP
     {
         Grid[] graphs;
         Cities cities;
-        Stack <TextBox> errorTB;
+        Stack<TextBox> errorTB;
         Thread calc;
+        CancellationTokenSource cts;
+        Queue<Task> tasks;
         public MainWindow()
         {
             InitializeComponent();
@@ -38,14 +41,38 @@ namespace TSP
             graphs[3] = graph4;
             graphs[4] = graph5;
             errorTB = new Stack<TextBox>();
+            tasks = new Queue<Task>();
             calc = new Thread(CalculateInThread);
-            
+
         }
+        // токен для видимого завершения задач
+        // задачи не убиваются
+        private CancellationTokenSource CancelCalculation()
+        {            
+            foreach (var task in tasks)
+            {
+                if (!task.IsCompleted)
+                {
+                    cts.Cancel();
+                    break;
+                }
+            }
+            tasks.Clear();
+            cts = new CancellationTokenSource();
+            return cts;
+        }
+
         public void DrawPoints(object sender, RoutedEventArgs e)
         {
+            CancelCalculation();
+            ClearTextBox();
             int nCities;
             if (!Int32.TryParse(textB_countCities.Text, out nCities))
+            {
+                textB_countCities.Background = Brushes.Coral;
+                errorTB.Push(textB_countCities);
                 return;
+            }
             cities = new Cities(nCities);
             cities.Generate((int)graph1.Width);
             GeometryGroup cityGroup = new GeometryGroup();
@@ -79,7 +106,7 @@ namespace TSP
             GeometryGroup linesGroup = new GeometryGroup();
             LineGeometry line = new LineGeometry();
             int city = 1;
-            for (;city < trail.Length; city++)
+            for (; city < trail.Length; city++)
             {
                 line = new LineGeometry();
                 line.StartPoint = new Point(cities.GetLocation(trail[city - 1]).X, cities.GetLocation(trail[city - 1]).Y);
@@ -94,14 +121,14 @@ namespace TSP
             Path myPath = new Path();
             myPath.Stroke = Brushes.Black;
             myPath.Data = linesGroup;
-            if(graph.Children.Count > 1)
+            if (graph.Children.Count > 1)
                 graph.Children.Remove(graph.Children[1]);
             graph.Children.Add(myPath);
         }
         public void DrawLines(Location[] trail, Grid graph)
         {
             GeometryGroup linesGroup = new GeometryGroup();
-            LineGeometry line = new LineGeometry();        
+            LineGeometry line = new LineGeometry();
             int city = 1;
             for (; city < trail.Length; city++)
             {
@@ -132,22 +159,25 @@ namespace TSP
         }
 
         public void Calculate(object sender, RoutedEventArgs e)
-        {
+        {           
             ClearTextBox();
-            //calc.Start();
             CalculateInThread();
         }
+
         public void CalculateInThread()
         {
-            CalculateBF();
-            CalculateACO();
-            CalculateGA();
-            CalculateSA();
-            CalculateBB();
+            CancellationTokenSource newCts = CancelCalculation();
+            CalculateBF(newCts);
+            CalculateACO(newCts);
+            CalculateGA(newCts);
+            CalculateSA(newCts);
+            CalculateBB(newCts);           
         }
-        public void CalculateBF()
+        
+        public async void CalculateBF(CancellationTokenSource token)
         {
-            decimal maxTour;
+            progressBF.Visibility = Visibility.Visible;
+            decimal maxTour = 0;
             string tb = textB_maxTour.Text;
             if (!Decimal.TryParse(tb, out maxTour))
             {
@@ -155,17 +185,41 @@ namespace TSP
                 errorTB.Push(textB_maxTour);
                 return;
             }
-            BruteForce algorithm = new BruteForce(maxTour);
-            Stopwatch time = new Stopwatch();
-            time.Start();
-                int[] solve = algorithm.Solution(cities);
-            time.Stop();
-            DrawLines(solve, graphs[0]);
-            timeBF.Content = time.ElapsedMilliseconds.ToString();
-            lengthBF.Content = algorithm.TotalDistance.ToString("F2");
+            BruteForce algorithm = null;
+            Stopwatch time = null;
+            int[] solve = null;
+            Task thisTask = (Task.Run(() =>
+                {
+                    algorithm = new BruteForce(maxTour);
+                    time = new Stopwatch();
+                    time.Start();
+                    solve = algorithm.Solution(cities);
+                    time.Stop();
+                }));
+            tasks.Enqueue(thisTask);          
+            await Task.Run(() =>
+            {
+                while (true)
+                {
+
+                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    {
+                        break;
+                    }
+                }
+            });
+            if (solve != null)
+            {
+                DrawLines(solve, graphs[0]);
+                timeBF.Content = time.ElapsedMilliseconds.ToString();
+                lengthBF.Content = algorithm.TotalDistance.ToString("F2");
+            }
+            progressBF.Visibility = Visibility.Hidden;
         }
-        public void CalculateACO()
+
+        public async void CalculateACO(CancellationTokenSource token)
         {
+            progressACO.Visibility = Visibility.Visible;
             int alpha;
             if (!Int32.TryParse(textB_alpha.Text, out alpha))
             {
@@ -208,18 +262,41 @@ namespace TSP
                 errorTB.Push(textB_time);
                 return;
             }
-            AntColony algorithm = new AntColony(alpha, beta, rho, Q, numAnts, maxTime);
-            Stopwatch time = new Stopwatch();
-            time.Start();
-                int[] solve = algorithm.Solution(cities);
-            time.Stop();
-            DrawLines(solve, graphs[1]);
-            timeAC.Content = time.ElapsedMilliseconds.ToString();
-            lengthAC.Content = algorithm.TotalDistance.ToString("F2");
+            AntColony algorithm = null;
+            Stopwatch time = null;
+            int[] solve = null;
+            Task thisTask = (Task.Run(() =>
+                {
+                    algorithm = new AntColony(alpha, beta, rho, Q, numAnts, maxTime);
+                    time = new Stopwatch();
+                    time.Start();
+                    solve = algorithm.Solution(cities);
+                    time.Stop();
+                }));
+            tasks.Enqueue(thisTask);          
+            await Task.Run(() =>
+            {
+                while (true)
+                {
+
+                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    {
+                        break;
+                    }
+                }
+            });
+            if (solve != null)
+            {
+                DrawLines(solve, graphs[1]);
+                timeAC.Content = time.ElapsedMilliseconds.ToString();
+                lengthAC.Content = algorithm.TotalDistance.ToString("F2");
+            }
+            progressACO.Visibility = Visibility.Hidden;
         }
 
-        public void CalculateGA()
+        public async void CalculateGA(CancellationTokenSource token)
         {
+            progressGA.Visibility = Visibility.Visible;
             int numPopulation;
             if (!Int32.TryParse(textB_numPopulate.Text, out numPopulation))
             {
@@ -234,18 +311,41 @@ namespace TSP
                 errorTB.Push(textB_timeGA);
                 return;
             }
-            GeneticAlgorithm algorithm = new GeneticAlgorithm(numPopulation, maxTime);
-            Stopwatch time = new Stopwatch();
-            time.Start();
-                Location[] solve = algorithm.Solution(cities);
-            time.Stop();
-            DrawLines(solve, graphs[2]);
-            timeGA.Content = time.ElapsedMilliseconds.ToString();
-            lengthGA.Content = algorithm.TotalDistance.ToString("F2");
+            GeneticAlgorithm algorithm = null;
+            Stopwatch time = null;
+            Location[] solve = null;
+            Task thisTask = (Task.Run(() =>
+                {
+                    algorithm = new GeneticAlgorithm(numPopulation, maxTime);
+                    time = new Stopwatch();
+                    time.Start();
+                    solve = algorithm.Solution(cities);
+                    time.Stop();
+                }));
+            tasks.Enqueue(thisTask);          
+            await Task.Run(() =>
+            {
+                while (true)
+                {
+
+                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    {
+                        break;
+                    }
+                }
+            });
+            if (solve != null)
+            {
+                DrawLines(solve, graphs[2]);
+                timeGA.Content = time.ElapsedMilliseconds.ToString();
+                lengthGA.Content = algorithm.TotalDistance.ToString("F2");
+            }
+            progressGA.Visibility = Visibility.Hidden;
         }
 
-        public void CalculateSA()
+        public async void CalculateSA(CancellationTokenSource token)
         {
+            progressSA.Visibility = Visibility.Visible;
             double temperature;
             if (!Double.TryParse(textB_temperature.Text, out temperature))
             {
@@ -267,18 +367,41 @@ namespace TSP
                 errorTB.Push(textB_coolingRate);
                 return;
             }
-            SimulatedAnnealing algorithm = new SimulatedAnnealing(temperature, absTemperature, coolingRate);
-            Stopwatch time = new Stopwatch();
-            time.Start();
-                int[] solve = algorithm.Solution(cities);
-            time.Stop();
-            DrawLines(solve, graphs[3]);
-            timeSA.Content = time.ElapsedMilliseconds.ToString();
-            lengthSA.Content = algorithm.TotalDistance.ToString("F2");
+            SimulatedAnnealing algorithm = null;
+            Stopwatch time = null;
+            int[] solve = null;
+            Task thisTask = (Task.Run(() =>
+                {
+                    algorithm = new SimulatedAnnealing(temperature, absTemperature, coolingRate);
+                    time = new Stopwatch();
+                    time.Start();
+                    solve = algorithm.Solution(cities);
+                    time.Stop();
+                }));
+            tasks.Enqueue(thisTask);          
+            await Task.Run(() =>
+            {
+                while (true)
+                {
+
+                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    {
+                        break;
+                    }
+                }
+            });
+            if (solve != null)
+            {
+                DrawLines(solve, graphs[3]);
+                timeSA.Content = time.ElapsedMilliseconds.ToString();
+                lengthSA.Content = algorithm.TotalDistance.ToString("F2");
+            }
+            progressSA.Visibility = Visibility.Hidden;
         }
 
-        public void CalculateBB()
+        public async void CalculateBB(CancellationTokenSource token)
         {
+            progressBB.Visibility = Visibility.Visible;
             int maxTime;
             if (!Int32.TryParse(textB_timeBB.Text, out maxTime))
             {
@@ -286,14 +409,36 @@ namespace TSP
                 errorTB.Push(textB_timeBB);
                 return;
             }
-            BranchAndBound algorithm = new BranchAndBound(maxTime);
-            Stopwatch time = new Stopwatch();
-            time.Start();
-            Location[] solve = algorithm.Solution(cities);
-            time.Stop();
-            DrawLines(solve, graphs[4]);
-            timeBB.Content = time.ElapsedMilliseconds.ToString();
-            lengthBB.Content = algorithm.TotalDistance.ToString("F2");
+            BranchAndBound algorithm = null;
+            Stopwatch time = null;
+            Location[] solve = null;
+            Task thisTask = (Task.Run(() =>
+                {
+                    algorithm = new BranchAndBound(maxTime);
+                    time = new Stopwatch();
+                    time.Start();
+                    solve = algorithm.Solution(cities);
+                    time.Stop();
+                }));
+            tasks.Enqueue(thisTask);          
+            await Task.Run(() =>
+            {
+                while (true)
+                {
+
+                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    {
+                        break;
+                    }
+                }
+            });
+            if (solve != null)
+            {
+                DrawLines(solve, graphs[4]);
+                timeBB.Content = time.ElapsedMilliseconds.ToString();
+                lengthBB.Content = algorithm.TotalDistance.ToString("F2");
+            }
+            progressBB.Visibility = Visibility.Hidden;
         }
 
     } // Class MainWindow

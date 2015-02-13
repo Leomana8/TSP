@@ -307,6 +307,7 @@ namespace TSP.ModelTSP
                         }
                     }
                 }
+                GC.Collect();
             }
 
             //
@@ -331,6 +332,7 @@ namespace TSP.ModelTSP
             // Iterate through the current child's children
             foreach (int child in state.ChildList)
             {
+
                 // Copy values from parent state so we can modify
                 List<int> childList = new List<int>(state.ChildList);
                 List<int> pathSoFar = new List<int>(state.PathSoFar);
