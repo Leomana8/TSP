@@ -16,7 +16,7 @@ using TSP.ModelTSP;
 
 using System.Diagnostics;
 using System.Threading;
-using System.Windows.Threading;
+
 
 namespace TSP
 {
@@ -28,9 +28,9 @@ namespace TSP
         Grid[] graphs;
         Cities cities;
         Stack<TextBox> errorTB;
-        Thread calc;
-        CancellationTokenSource cts;
+        CancellationTokenSource[] cts;
         Queue<Task> tasks;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -42,24 +42,21 @@ namespace TSP
             graphs[4] = graph5;
             errorTB = new Stack<TextBox>();
             tasks = new Queue<Task>();
-            calc = new Thread(CalculateInThread);
-
+            cts = new CancellationTokenSource[5];
+            for (int i = 0; i < cts.Length; i++)
+            {
+                cts[i] = new CancellationTokenSource();
+            }
         }
         // токен для видимого завершения задач
         // задачи не убиваются
-        private CancellationTokenSource CancelCalculation()
+        private void CancelCalculation()
         {            
-            foreach (var task in tasks)
+            foreach (var c in cts)
             {
-                if (!task.IsCompleted)
-                {
-                    cts.Cancel();
-                    break;
-                }
+                c.Cancel();
             }
             tasks.Clear();
-            cts = new CancellationTokenSource();
-            return cts;
         }
 
         public void DrawPoints(object sender, RoutedEventArgs e)
@@ -98,7 +95,12 @@ namespace TSP
                 graphs[i].Children.Clear();
                 graphs[i].Children.Add(myPath[i]);
             }
-            button_Calculate.IsEnabled = true;
+            button_CalcBF.IsEnabled = true;
+            button_CalcAC.IsEnabled = true;
+            button_CalcGA.IsEnabled = true;
+            button_CalcSA.IsEnabled = true;
+            button_CalcBB.IsEnabled = true;
+
         } // DrawPoints
 
         public void DrawLines(int[] trail, Grid graph)
@@ -158,24 +160,11 @@ namespace TSP
             }
         }
 
-        public void Calculate(object sender, RoutedEventArgs e)
-        {           
+        public async void CalculateBF(object sender, RoutedEventArgs e)
+        {
             ClearTextBox();
-            CalculateInThread();
-        }
-
-        public void CalculateInThread()
-        {
-            CancellationTokenSource newCts = CancelCalculation();
-            CalculateBF(newCts);
-            CalculateACO(newCts);
-            CalculateGA(newCts);
-            CalculateSA(newCts);
-            CalculateBB(newCts);           
-        }
-        
-        public async void CalculateBF(CancellationTokenSource token)
-        {
+            cts[0].Cancel();
+            cts[0] = new CancellationTokenSource();
             progressBF.Visibility = Visibility.Visible;
             decimal maxTour = 0;
             string tb = textB_maxTour.Text;
@@ -202,7 +191,7 @@ namespace TSP
                 while (true)
                 {
 
-                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    if (cts[0].Token.IsCancellationRequested || thisTask.IsCompleted)
                     {
                         break;
                     }
@@ -217,9 +206,12 @@ namespace TSP
             progressBF.Visibility = Visibility.Hidden;
         }
 
-        public async void CalculateACO(CancellationTokenSource token)
+        public async void CalculateAC(object sender, RoutedEventArgs e)
         {
-            progressACO.Visibility = Visibility.Visible;
+            ClearTextBox();
+            cts[1].Cancel();
+            cts[1] = new CancellationTokenSource();
+            progressAC.Visibility = Visibility.Visible;
             int alpha;
             if (!Int32.TryParse(textB_alpha.Text, out alpha))
             {
@@ -279,7 +271,7 @@ namespace TSP
                 while (true)
                 {
 
-                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    if (cts[1].Token.IsCancellationRequested || thisTask.IsCompleted)
                     {
                         break;
                     }
@@ -291,11 +283,14 @@ namespace TSP
                 timeAC.Content = time.ElapsedMilliseconds.ToString();
                 lengthAC.Content = algorithm.TotalDistance.ToString("F2");
             }
-            progressACO.Visibility = Visibility.Hidden;
+            progressAC.Visibility = Visibility.Hidden;
         }
 
-        public async void CalculateGA(CancellationTokenSource token)
+        public async void CalculateGA(object sender, RoutedEventArgs e)
         {
+            ClearTextBox();
+            cts[2].Cancel();
+            cts[2] = new CancellationTokenSource();
             progressGA.Visibility = Visibility.Visible;
             int numPopulation;
             if (!Int32.TryParse(textB_numPopulate.Text, out numPopulation))
@@ -328,7 +323,7 @@ namespace TSP
                 while (true)
                 {
 
-                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    if (cts[2].Token.IsCancellationRequested || thisTask.IsCompleted)
                     {
                         break;
                     }
@@ -343,8 +338,11 @@ namespace TSP
             progressGA.Visibility = Visibility.Hidden;
         }
 
-        public async void CalculateSA(CancellationTokenSource token)
+        public async void CalculateSA(object sender, RoutedEventArgs e)
         {
+            ClearTextBox();
+            cts[3].Cancel();
+            cts[3] = new CancellationTokenSource();
             progressSA.Visibility = Visibility.Visible;
             double temperature;
             if (!Double.TryParse(textB_temperature.Text, out temperature))
@@ -384,7 +382,7 @@ namespace TSP
                 while (true)
                 {
 
-                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    if (cts[3].Token.IsCancellationRequested || thisTask.IsCompleted)
                     {
                         break;
                     }
@@ -399,8 +397,11 @@ namespace TSP
             progressSA.Visibility = Visibility.Hidden;
         }
 
-        public async void CalculateBB(CancellationTokenSource token)
+        public async void CalculateBB(object sender, RoutedEventArgs e)
         {
+            ClearTextBox();
+            cts[4].Cancel();
+            cts[4] = new CancellationTokenSource();
             progressBB.Visibility = Visibility.Visible;
             int maxTime;
             if (!Int32.TryParse(textB_timeBB.Text, out maxTime))
@@ -426,7 +427,7 @@ namespace TSP
                 while (true)
                 {
 
-                    if (token.Token.IsCancellationRequested || thisTask.IsCompleted)
+                    if (cts[4].Token.IsCancellationRequested || thisTask.IsCompleted)
                     {
                         break;
                     }
