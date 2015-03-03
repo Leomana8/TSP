@@ -100,6 +100,7 @@ namespace TSP
             button_CalcGA.IsEnabled = true;
             button_CalcSA.IsEnabled = true;
             button_CalcBB.IsEnabled = true;
+            button_save.IsEnabled = true;
 
         } // DrawPoints
 
@@ -160,7 +161,7 @@ namespace TSP
             }
         }
 
-        public async void CalculateBF(object sender, RoutedEventArgs e)
+        public async Task CalculateBF()
         {
             ClearTextBox();
             cts[0].Cancel();
@@ -206,7 +207,7 @@ namespace TSP
             progressBF.Visibility = Visibility.Hidden;
         }
 
-        public async void CalculateAC(object sender, RoutedEventArgs e)
+        public async Task CalculateAC()
         {
             ClearTextBox();
             cts[1].Cancel();
@@ -286,7 +287,7 @@ namespace TSP
             progressAC.Visibility = Visibility.Hidden;
         }
 
-        public async void CalculateGA(object sender, RoutedEventArgs e)
+        public async Task CalculateGA()
         {
             ClearTextBox();
             cts[2].Cancel();
@@ -338,7 +339,7 @@ namespace TSP
             progressGA.Visibility = Visibility.Hidden;
         }
 
-        public async void CalculateSA(object sender, RoutedEventArgs e)
+        public async Task CalculateSA()
         {
             ClearTextBox();
             cts[3].Cancel();
@@ -397,7 +398,7 @@ namespace TSP
             progressSA.Visibility = Visibility.Hidden;
         }
 
-        public async void CalculateBB(object sender, RoutedEventArgs e)
+        public async Task CalculateBB()
         {
             ClearTextBox();
             cts[4].Cancel();
@@ -435,11 +436,79 @@ namespace TSP
             });
             if (solve != null)
             {
+                
                 DrawLines(solve, graphs[4]);
-                timeBB.Content = time.ElapsedMilliseconds.ToString();
-                lengthBB.Content = algorithm.TotalDistance.ToString("F2");
+                timeBB.Content = time.ElapsedMilliseconds;
+                lengthBB.Content = Math.Round(algorithm.TotalDistance, 2);
             }
             progressBB.Visibility = Visibility.Hidden;
+        }
+
+        private async void save_click(object sender, RoutedEventArgs e)
+        {
+            ResaultAlgorithm[] resault = new ResaultAlgorithm[5];
+            resault[0] = new ResaultAlgorithm(cities.NumCities, "Полный перебор");
+            for (int i = 5; i > 0; i--)
+            {
+                
+                await CalculateBF();
+                resault[0].Add(Convert.ToDouble(timeBF.Content), Convert.ToDouble(lengthBF.Content));
+            }
+            resault[1] = new ResaultAlgorithm(cities.NumCities, "Муравьиный алгоритм");
+            for (int i = 5; i > 0; i--)
+            {
+                await CalculateAC();
+                lengthBF.Content.ToString();
+                resault[1].Add(Convert.ToDouble(timeAC.Content), Convert.ToDouble(lengthAC.Content));
+            }
+            resault[2] = new ResaultAlgorithm(cities.NumCities, "Генетический алгоритм");
+            for (int i = 5; i > 0; i--)
+            {
+                await CalculateGA();
+                lengthBF.Content.ToString();
+                resault[2].Add(Convert.ToDouble(timeGA.Content), Convert.ToDouble(lengthGA.Content));
+            }
+            resault[3] = new ResaultAlgorithm(cities.NumCities, "Метод имитации и отжига");
+            for (int i = 5; i > 0; i--)
+            {
+                await CalculateSA();
+                lengthBF.Content.ToString();
+                resault[3].Add(Convert.ToDouble(timeSA.Content), Convert.ToDouble(lengthSA.Content));
+            }
+            resault[4] = new ResaultAlgorithm(cities.NumCities, "Метод ветвей и границ");
+            for (int i = 5; i > 0; i--)
+            {
+                await CalculateBB();
+                lengthBF.Content.ToString();
+                resault[4].Add(Convert.ToDouble(timeBB.Content), Convert.ToDouble(lengthBB.Content));
+            }
+            ExelExport exel = new ExelExport();
+            exel.Save(resault);
+        }
+
+        private void button_CalcAC_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateAC();
+        }
+
+        private void button_CalcGA_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateGA();
+        }
+
+        private void button_CalcSA_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateSA();
+        }
+
+        private void button_CalcBB_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateBB();
+        }
+
+        private void button_CalcBF_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateBF();
         }
 
     } // Class MainWindow

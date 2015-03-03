@@ -92,15 +92,15 @@
             </WrapPanel>
             <StackPanel Width="1334" Orientation="Horizontal" Margin="10,540,0,0" VerticalAlignment="Top" Height="40">
                 <Separator Width="87" Background="{x:Null}" />
-                <Button x:Name="button_CalcBF" Click="CalculateBF" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Margin="0,0,0,9" />
+                <Button x:Name="button_CalcBF" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Margin="0,0,0,9" Click="button_CalcBF_Click" />
                 <Separator Width="152" Background="{x:Null}" />
-                <Button x:Name="button_CalcAC" Click="CalculateAC" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" />
+                <Button x:Name="button_CalcAC" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Click="button_CalcAC_Click" />
                 <Separator Width="152" Background="{x:Null}" />
-                <Button x:Name="button_CalcGA" Click="CalculateGA" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" />
+                <Button x:Name="button_CalcGA" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Click="button_CalcGA_Click" />
                 <Separator Width="152" Background="{x:Null}" />
-                <Button x:Name="button_CalcSA" Click="CalculateSA" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" />
+                <Button x:Name="button_CalcSA" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Click="button_CalcSA_Click" />
                 <Separator Width="152" Background="{x:Null}" />
-                <Button x:Name="button_CalcBB" Click="CalculateBB" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" />
+                <Button x:Name="button_CalcBB" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Click="button_CalcBB_Click" />
             </StackPanel>
 
             <WrapPanel Width="1334" Margin="10,600,0,0" UseLayoutRounding="False" VerticalAlignment="Top" Height="72">
@@ -151,7 +151,7 @@
                 </StackPanel>
             </WrapPanel>
 
-            <WrapPanel Width="1334" Margin="10,600,0,0" UseLayoutRounding="False" VerticalAlignment="Top" Height="72">
+            <WrapPanel Width="1334" Margin="14,597,4,0" UseLayoutRounding="False" VerticalAlignment="Top" Height="72">
                 <Separator Width="22" Background="{x:Null}" />
                 <Rectangle HorizontalAlignment="Left" Height="59" Stroke="#FFC8E8C4" VerticalAlignment="Top" Width="240" MinWidth="9" StrokeStartLineCap="Square" StrokeThickness="5"/>
                 <Separator Width="22" Background="{x:Null}" />
@@ -168,6 +168,7 @@
             <ProgressBar x:Name="progressGA" Margin="557,585,550,213" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
             <ProgressBar x:Name="progressSA" Margin="819,585,288,213" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
             <ProgressBar x:Name="progressBB" Margin="1081,585,26,213" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
+            <Button x:Name="button_save" Click="save_click" Content="Сохранить" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Margin="630,672,0,0" />
         </Grid>
     </ScrollViewer>
 </Window>
