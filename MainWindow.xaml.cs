@@ -482,8 +482,7 @@ namespace TSP
                 lengthBF.Content.ToString();
                 resault[4].Add(Convert.ToDouble(timeBB.Content), Convert.ToDouble(lengthBB.Content));
             }
-            ExelExport exel = new ExelExport();
-            exel.Save(resault);
+            ExelExport.Save(resault);
         }
 
         private void button_CalcAC_Click(object sender, RoutedEventArgs e)

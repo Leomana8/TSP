@@ -75,8 +75,9 @@ namespace TSP
 
     class ExelExport
     {
-        public void Save( ResaultAlgorithm[] data)
+        public static void Save( ResaultAlgorithm[] data)
         {
+            try
             {
                 //создаём новое Excel приложение
                 Excel.Application exApp = new Excel.Application();
@@ -114,12 +115,17 @@ namespace TSP
                 {
                     workSheet.SaveAs(path, 51);
                 }
-                catch (COMException e)
+                catch (COMException)
                 {
                     MessageBox.Show("Не сохранено. Закройте документ " + path);
+                    exApp.Quit();
                 }
 
                 exApp.Quit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
 
         }
