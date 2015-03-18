@@ -51,7 +51,7 @@ namespace TSP
         // токен для видимого завершения задач
         // задачи не убиваются
         private void CancelCalculation()
-        {            
+        {
             foreach (var c in cts)
             {
                 c.Cancel();
@@ -186,7 +186,7 @@ namespace TSP
                     solve = algorithm.Solution(cities);
                     time.Stop();
                 }));
-            tasks.Enqueue(thisTask);          
+            tasks.Enqueue(thisTask);
             await Task.Run(() =>
             {
                 while (true)
@@ -266,7 +266,7 @@ namespace TSP
                     solve = algorithm.Solution(cities);
                     time.Stop();
                 }));
-            tasks.Enqueue(thisTask);          
+            tasks.Enqueue(thisTask);
             await Task.Run(() =>
             {
                 while (true)
@@ -318,7 +318,7 @@ namespace TSP
                     solve = algorithm.Solution(cities);
                     time.Stop();
                 }));
-            tasks.Enqueue(thisTask);          
+            tasks.Enqueue(thisTask);
             await Task.Run(() =>
             {
                 while (true)
@@ -377,7 +377,7 @@ namespace TSP
                     solve = algorithm.Solution(cities);
                     time.Stop();
                 }));
-            tasks.Enqueue(thisTask);          
+            tasks.Enqueue(thisTask);
             await Task.Run(() =>
             {
                 while (true)
@@ -422,7 +422,7 @@ namespace TSP
                     solve = algorithm.Solution(cities);
                     time.Stop();
                 }));
-            tasks.Enqueue(thisTask);          
+            tasks.Enqueue(thisTask);
             await Task.Run(() =>
             {
                 while (true)
@@ -436,7 +436,7 @@ namespace TSP
             });
             if (solve != null)
             {
-                
+
                 DrawLines(solve, graphs[4]);
                 timeBB.Content = time.ElapsedMilliseconds;
                 lengthBB.Content = Math.Round(algorithm.TotalDistance, 2);
@@ -448,38 +448,27 @@ namespace TSP
         {
             ResaultAlgorithm[] resault = new ResaultAlgorithm[5];
             resault[0] = new ResaultAlgorithm(cities.NumCities, "Полный перебор");
-            for (int i = 5; i > 0; i--)
-            {
-                
-                await CalculateBF();
-                resault[0].Add(Convert.ToDouble(timeBF.Content), Convert.ToDouble(lengthBF.Content));
-            }
             resault[1] = new ResaultAlgorithm(cities.NumCities, "Муравьиный алгоритм");
-            for (int i = 5; i > 0; i--)
-            {
-                await CalculateAC();
-                lengthBF.Content.ToString();
-                resault[1].Add(Convert.ToDouble(timeAC.Content), Convert.ToDouble(lengthAC.Content));
-            }
             resault[2] = new ResaultAlgorithm(cities.NumCities, "Генетический алгоритм");
-            for (int i = 5; i > 0; i--)
-            {
-                await CalculateGA();
-                lengthBF.Content.ToString();
-                resault[2].Add(Convert.ToDouble(timeGA.Content), Convert.ToDouble(lengthGA.Content));
-            }
             resault[3] = new ResaultAlgorithm(cities.NumCities, "Метод имитации и отжига");
-            for (int i = 5; i > 0; i--)
-            {
-                await CalculateSA();
-                lengthBF.Content.ToString();
-                resault[3].Add(Convert.ToDouble(timeSA.Content), Convert.ToDouble(lengthSA.Content));
-            }
             resault[4] = new ResaultAlgorithm(cities.NumCities, "Метод ветвей и границ");
             for (int i = 5; i > 0; i--)
             {
+                DrawPoints(sender, e);
+
+                await CalculateBF();
+                resault[0].Add(Convert.ToDouble(timeBF.Content), Convert.ToDouble(lengthBF.Content));
+                
+                await CalculateAC();
+                resault[1].Add(Convert.ToDouble(timeAC.Content), Convert.ToDouble(lengthAC.Content));              
+
+                await CalculateGA();
+                resault[2].Add(Convert.ToDouble(timeGA.Content), Convert.ToDouble(lengthGA.Content));
+                
+                await CalculateSA();
+                resault[3].Add(Convert.ToDouble(timeSA.Content), Convert.ToDouble(lengthSA.Content));
+                
                 await CalculateBB();
-                lengthBF.Content.ToString();
                 resault[4].Add(Convert.ToDouble(timeBB.Content), Convert.ToDouble(lengthBB.Content));
             }
             ExelExport.Save(resault);
