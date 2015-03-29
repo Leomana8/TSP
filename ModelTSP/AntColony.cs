@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Ant Colony Optimization (ACO) solving a Traveling Salesman Problem (TSP).
-// Free parameters are alpha, beta, rho, and Q. Hard-coded constants limit min and max
-// values of pheromones.
 namespace TSP.ModelTSP
 {
     // муравьиный алгоритм
+    // https://msdn.microsoft.com/en-us/magazine/hh781027.aspx
+    // Ant Colony Optimization (ACO) solving a Traveling Salesman Problem (TSP).
+    // Free parameters are alpha, beta, rho, and Q. Hard-coded constants limit min and max
+    // values of pheromones.
     class AntColony
     {
         Random random = new Random(0);
@@ -27,6 +28,16 @@ namespace TSP.ModelTSP
         {
             get { return _totalDistance; }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="alpha">влияние феромонов на направление</param>
+        /// <param name="beta">влияние на дистанцию между узлами</param>
+        /// <param name="rho">коэффициент уменьшения феромон</param>
+        /// <param name="Q">коэффициент увеличения феромонов</param>
+        /// <param name="numAnts">число муравьев</param>
+        /// <param name="maxTime">максимальное время расчета</param>
         public AntColony(int alpha, int beta, double rho, double Q, int numAnts, int maxTime)
         {
             this.alpha = alpha;

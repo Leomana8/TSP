@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace TSP.ModelTSP
 {
+    // генетический алгоритм 
+    // http://www.codeproject.com/Articles/792887/Travelling-Salesman-Genetic-Algorithm
     class GeneticAlgorithm
     {
         private LocationGA _startLocation;
@@ -18,6 +20,12 @@ namespace TSP.ModelTSP
         {
             get { return _totalDistance; }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="popalationCount">число популяции</param>
+        /// <param name="maxTime">максимальное время расчета</param>
         public GeneticAlgorithm(int popalationCount, int maxTime)
         {
             this._populationCount = popalationCount;
@@ -26,14 +34,6 @@ namespace TSP.ModelTSP
 
         public Location[] Solution(Cities cities)
         {
-
-            //// для преобразования Location к LocationGA
-            //Func<Location, LocationGA> toLocationGA = delegate(Location a)
-            //{
-            //    return (LocationGA)a;
-            //};
-            //LocationGA[] _randomLocations = Array.ConvertAll(cities.GetLocations(), new Converter<Location, LocationGA>(toLocationGA));
-            ////_randomLocations = (LocationGA[])cities.GetLocations();  
             LocationGA[] _randomLocations = new LocationGA[cities.NumCities];
             _randomLocations = cities.GetLocations().Select(x => new LocationGA(x)).ToArray();
             GoGeneticAlgorithm((LocationGA)_randomLocations[0], _randomLocations);

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TSP.ModelTSP
 {
+    // метод полного перебора
     class BruteForce
     {
         private double _totalDistance;
@@ -15,7 +16,10 @@ namespace TSP.ModelTSP
         {
             get { return _totalDistance; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="maxTour">количество перебиримаемых вариантов маршрутов</param>
         public BruteForce(decimal maxTour)
         {
             _maxTour = maxTour;

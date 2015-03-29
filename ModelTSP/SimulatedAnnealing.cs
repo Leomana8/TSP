@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace TSP.ModelTSP
 {
+    // алгоритм иммитации и отжига
+    // http://www.codeproject.com/Articles/26758/Simulated-Annealing-Solving-the-Travelling-Salesma
     class SimulatedAnnealing
     {
         private string filePath;
@@ -18,6 +20,12 @@ namespace TSP.ModelTSP
         private double coolingRate;
         private double absoluteTemperature;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="temperature">температура</param>
+        /// <param name="absoluteTemperature">абсолютная температура</param>
+        /// <param name="coolingRate">скорость охлаждения</param>
         public SimulatedAnnealing(double temperature, double absoluteTemperature, double coolingRate)
         {
             this.temperature = temperature;

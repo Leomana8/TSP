@@ -97,8 +97,8 @@ namespace TSP
                 for (int i = 0; i < data.Length; i++)
                 {
                     int c = (i + 1) * 2;
-                    workSheet.Cells[1, c] = data[i].Name + " длина";
-                    workSheet.Cells[1, c + 1] = data[i].Name + " время";
+                    workSheet.Cells[1, c] = data[i].Name + " Длина";
+                    workSheet.Cells[1, c + 1] = data[i].Name + " Время";
                     for (int j = 0; j < data[i].CountData; j++)
                     {
                         ResaultAlgorithm.Resault res = data[i][j];

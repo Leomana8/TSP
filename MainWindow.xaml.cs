@@ -48,6 +48,7 @@ namespace TSP
                 cts[i] = new CancellationTokenSource();
             }
         }
+
         // токен для видимого завершения задач
         // задачи не убиваются
         private void CancelCalculation()
@@ -444,6 +445,8 @@ namespace TSP
             progressBB.Visibility = Visibility.Hidden;
         }
 
+
+        // Сохранение в exel пяти расчетов по всем алгоритмам
         private async void save_click(object sender, RoutedEventArgs e)
         {
             ResaultAlgorithm[] resault = new ResaultAlgorithm[5];

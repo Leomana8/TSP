@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TSP.ModelTSP
 {
+    // метод ветвей и границ
+    // http://axon.cs.byu.edu/~martinez/classes/312/Projects/TSP/TSP.html
+    // http://www.java2s.com/Open-Source/CSharp_Free_Code/Algorithm/Download_TSP_with_Branch_and_Bound.htm
     class BranchAndBound
     {
         #region Constructors
@@ -17,11 +20,15 @@ namespace TSP.ModelTSP
             get { return _totalDistance; }
         }
         private int _time;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time">время расчета</param>
         public BranchAndBound(int time)
         {
             _time = time;
         }
+
         public Location[] Solution(Cities cities)
         {
             this._seed = 0;

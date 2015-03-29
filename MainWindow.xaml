@@ -5,12 +5,26 @@
         Title="Задача коммивояжера" Height="745.268" Width="1376.973" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <ScrollViewer HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" >
 
-        <Grid x:Name="g">
-            <Label Content="Число городов" Height="40" FontSize="16" Margin="131,10,1088,763" />
-            <TextBox x:Name="textB_countCities" HorizontalAlignment="Left" Height="23" Margin="260,14,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="44" UndoLimit="3" FontSize="16"/>
-            <Button Click="DrawPoints" Content="Построить" Height="27" HorizontalAlignment="Left" Margin="334,12,0,0" Name="button_random" VerticalAlignment="Top" Width="87" FontSize="14" />
-
-            <WrapPanel  Background="LightBlue" Margin="10,59,0,284" Width="1334" UseLayoutRounding="False">
+        <Grid x:Name="g" Height="715" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+                <RowDefinition Height="470"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="34" Width="426" Orientation="Horizontal" Margin="22,8,0,0" >
+                <Label Content="Число городов" FontSize="16" />
+                <Separator Width="22" Background="{x:Null}" />
+                <TextBox x:Name="textB_countCities" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="44" UndoLimit="3" FontSize="16"/>
+                <Separator Width="22" Background="{x:Null}" />
+                <Button Click="DrawPoints" Content="Построить" Height="27" HorizontalAlignment="Left" Name="button_random" VerticalAlignment="Top" Width="87" FontSize="14" />
+            </StackPanel>
+            <WrapPanel Grid.Row="1" Grid.Column="0" Background="LightBlue"  Width="1334" UseLayoutRounding="False" >
                 <Separator Width="1350" Height="10" Background="{x:Null}" />
                 <Separator Width="22" Background="{x:Null}" />
                 <Label Content="Полный перебор" Height="40" Width="262" FontSize="16" />
@@ -90,7 +104,7 @@
                 <Separator Width="22" Background="{x:Null}" />
                 <Separator Width="22" Height="2" Background="{x:Null}" />
             </WrapPanel>
-            <StackPanel Width="1334" Orientation="Horizontal" Margin="10,540,0,0" VerticalAlignment="Top" Height="40">
+            <StackPanel Grid.Row="2" Grid.Column="0"  Width="1334" Orientation="Horizontal" VerticalAlignment="Top" Height="40" Margin="9,6,9,0">
                 <Separator Width="87" Background="{x:Null}" />
                 <Button x:Name="button_CalcBF" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Margin="0,0,0,9" Click="button_CalcBF_Click" />
                 <Separator Width="152" Background="{x:Null}" />
@@ -103,7 +117,7 @@
                 <Button x:Name="button_CalcBB" Content="Расчет" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Click="button_CalcBB_Click" />
             </StackPanel>
 
-            <WrapPanel Width="1334" Margin="10,600,0,0" UseLayoutRounding="False" VerticalAlignment="Top" Height="72">
+            <WrapPanel Grid.Row="4" Grid.Column="0"  Width="1334" UseLayoutRounding="False" VerticalAlignment="Top" Height="70">
                 <Separator Width="22" Background="{x:Null}" />
                 <StackPanel Height="71" VerticalAlignment="Top" Width="165" >
                     <Label Content=" Длина маршрута = " Height="27" HorizontalContentAlignment="Right"  />
@@ -151,7 +165,7 @@
                 </StackPanel>
             </WrapPanel>
 
-            <WrapPanel Width="1334" Margin="14,597,4,0" UseLayoutRounding="False" VerticalAlignment="Top" Height="72">
+            <WrapPanel Grid.Row="4" Grid.Column="0"  Width="1334" UseLayoutRounding="False" VerticalAlignment="Top" Height="70">
                 <Separator Width="22" Background="{x:Null}" />
                 <Rectangle HorizontalAlignment="Left" Height="59" Stroke="#FFC8E8C4" VerticalAlignment="Top" Width="240" MinWidth="9" StrokeStartLineCap="Square" StrokeThickness="5"/>
                 <Separator Width="22" Background="{x:Null}" />
@@ -163,12 +177,19 @@
                 <Separator Width="22" Background="{x:Null}" />
                 <Rectangle HorizontalAlignment="Left" Height="59" Stroke="#FFC8E8C4" VerticalAlignment="Top" Width="240" MinWidth="9" StrokeStartLineCap="Square" StrokeThickness="5"/>
             </WrapPanel>
-            <ProgressBar x:Name="progressBF" Margin="33,585,1074,213" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
-            <ProgressBar x:Name="progressAC" Margin="296,585,811,213" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
-            <ProgressBar x:Name="progressGA" Margin="557,585,550,213" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
-            <ProgressBar x:Name="progressSA" Margin="819,585,288,213" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
-            <ProgressBar x:Name="progressBB" Margin="1081,585,26,213" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
-            <Button x:Name="button_save" Click="save_click" Content="Сохранить" Height="31" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" Margin="630,672,0,0" />
+            <WrapPanel Grid.Row="3" Grid.Column="0"  Width="1334" UseLayoutRounding="False" VerticalAlignment="Top" Height="20">
+                <Separator Width="22" Background="{x:Null}" />
+                <ProgressBar x:Name="progressBF" Height="20" Width="240" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
+                <Separator Width="22" Background="{x:Null}" />
+                <ProgressBar x:Name="progressAC" Height="20" Width="240" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
+                <Separator Width="22" Background="{x:Null}" />
+                <ProgressBar x:Name="progressGA" Height="20" Width="240" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
+                <Separator Width="22" Background="{x:Null}" />
+                <ProgressBar x:Name="progressSA" Height="20" Width="240" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
+                <Separator Width="22" Background="{x:Null}" />
+                <ProgressBar x:Name="progressBB" Height="20" Width="240" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
+            </WrapPanel>
+            <Button Grid.Row="5" Grid.Column="0"  x:Name="button_save" Click="save_click" Content="Сохранить" Height="31" HorizontalAlignment="Center" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" HorizontalContentAlignment="Center" />
         </Grid>
     </ScrollViewer>
 </Window>
