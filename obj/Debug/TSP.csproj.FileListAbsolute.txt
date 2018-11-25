@@ -26,3 +26,18 @@ D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\Main
 D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.g.resources
 D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.Properties.Resources.resources
 D:\Docyment\prog\GitHub\Задача коммивояжера\TSP\obj\Debug\TSP.csproj.GenerateResource.Cache
+C:\Users\Михаил\Desktop\ПРО\TSP\bin\Debug\TSP.exe.config
+C:\Users\Михаил\Desktop\ПРО\TSP\bin\Debug\TSP.exe
+C:\Users\Михаил\Desktop\ПРО\TSP\bin\Debug\TSP.pdb
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP.csprojAssemblyReference.cache
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\MainWindow.g.cs
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\App.g.cs
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP_MarkupCompile.cache
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP_MarkupCompile.lref
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\MainWindow.baml
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP.g.resources
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP.Properties.Resources.resources
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP.csproj.GenerateResource.cache
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP.csproj.CoreCompileInputs.cache
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP.exe
+C:\Users\Михаил\Desktop\ПРО\TSP\obj\Debug\TSP.pdb

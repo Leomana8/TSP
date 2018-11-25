@@ -35,7 +35,7 @@ namespace TSP
                 _length = length;
             }
         };
-        
+
         private string _name;
         public string Name
         {
@@ -60,22 +60,25 @@ namespace TSP
             get { return _data.Count; }
         }
 
-        public ResaultAlgorithm (int countCities, string name)
+        public ResaultAlgorithm(int countCities, string name)
         {
             _countCities = countCities;
             _name = name;
-            _data =new List<Resault>();
+            _data = new List<Resault>();
         }
 
         public void Add(double time, double length)
         {
-            _data.Add (new Resault(time, length));
+            _data.Add(new Resault(time, length));
         }
     }
 
-    class ExelExport
+
+
+
+    static class ExelExport
     {
-        public static void Save( ResaultAlgorithm[] data)
+        public static void Save(ResaultAlgorithm[] data)
         {
             try
             {
@@ -90,7 +93,7 @@ namespace TSP
 
                 //добавляем строку в Excel файл
                 workSheet.Cells[1, 1] = "Вершин";
-                for (int j = 0; j < data[0].CountData; j ++)
+                for (int j = 0; j < data[0].CountData; j++)
                 {
                     workSheet.Cells[j + 2, 1] = data[0].CountCities;
                 }
@@ -130,4 +133,45 @@ namespace TSP
 
         }
     }
+
+    static class TextExport
+    {
+        public static void Save(ResaultAlgorithm[] data)
+        {
+            try
+            {
+                string path = AppDomain.CurrentDomain.BaseDirectory + data[0].CountCities + "_TSP.txt";
+                StreamWriter sw = new StreamWriter(path);
+                sw.Write("Вершин  ");
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sw.Write(data[i].Name + " Длина  ");
+                    sw.Write(data[i].Name + " Время  ");
+                }
+                sw.WriteLine();
+                var len = "Вершин ".Length;
+                for (int j = 0; j < data[0].CountData; j++)
+                {
+                    sw.Write("{0, "+(len-1)+"}", data[0].CountCities);
+                    for (int i = 0; i < data.Length; i++)
+                    {
+                        var len1 = (data[i].Name + " Длина  ").Length;
+                        var len2 = (data[i].Name + " Время  ").Length;
+                        ResaultAlgorithm.Resault res = data[i][j];
+                        sw.Write("{0, "+(len1-1)+"}", res.Length.ToString() );
+                        sw.Write("{0, " + (len2-1) + "}", res.Time.ToString());
+                    }
+                    sw.WriteLine();
+                }
+                sw.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+    }
+
+
 }

@@ -101,8 +101,8 @@ namespace TSP
             button_CalcGA.IsEnabled = true;
             button_CalcSA.IsEnabled = true;
             button_CalcBB.IsEnabled = true;
-            button_save.IsEnabled = true;
-
+            button_save_text.IsEnabled = true;
+            button_save_excel.IsEnabled = true;
         } // DrawPoints
 
         public void DrawLines(int[] trail, Grid graph)
@@ -475,6 +475,38 @@ namespace TSP
                 resault[4].Add(Convert.ToDouble(timeBB.Content), Convert.ToDouble(lengthBB.Content));
             }
             ExelExport.Save(resault);
+        }
+
+
+        // Сохранение в exel пяти расчетов по всем алгоритмам
+        private async void save_click_text(object sender, RoutedEventArgs e)
+        {
+            ResaultAlgorithm[] resault = new ResaultAlgorithm[5];
+            resault[0] = new ResaultAlgorithm(cities.NumCities, "Полный перебор");
+            resault[1] = new ResaultAlgorithm(cities.NumCities, "Муравьиный алгоритм");
+            resault[2] = new ResaultAlgorithm(cities.NumCities, "Генетический алгоритм");
+            resault[3] = new ResaultAlgorithm(cities.NumCities, "Метод имитации и отжига");
+            resault[4] = new ResaultAlgorithm(cities.NumCities, "Метод ветвей и границ");
+            for (int i = 5; i > 0; i--)
+            {
+                DrawPoints(sender, e);
+
+                await CalculateBF();
+                resault[0].Add(Convert.ToDouble(timeBF.Content), Convert.ToDouble(lengthBF.Content));
+
+                await CalculateAC();
+                resault[1].Add(Convert.ToDouble(timeAC.Content), Convert.ToDouble(lengthAC.Content));
+
+                await CalculateGA();
+                resault[2].Add(Convert.ToDouble(timeGA.Content), Convert.ToDouble(lengthGA.Content));
+
+                await CalculateSA();
+                resault[3].Add(Convert.ToDouble(timeSA.Content), Convert.ToDouble(lengthSA.Content));
+
+                await CalculateBB();
+                resault[4].Add(Convert.ToDouble(timeBB.Content), Convert.ToDouble(lengthBB.Content));
+            }
+            TextExport.Save(resault);
         }
 
         private void button_CalcAC_Click(object sender, RoutedEventArgs e)
