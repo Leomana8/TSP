@@ -189,7 +189,8 @@
                 <Separator Width="22" Background="{x:Null}" />
                 <ProgressBar x:Name="progressBB" Height="20" Width="240" Background="White" IsIndeterminate="True" Visibility="Hidden" BorderThickness="0" Foreground="#FF9CDCB6"/>
             </WrapPanel>
-            <Button Grid.Row="5" Grid.Column="0"  x:Name="button_save" Click="save_click" Content="Сохранить" Height="31" HorizontalAlignment="Center" VerticalAlignment="Top" Width="110" IsEnabled="False" FontSize="16" FontFamily="Tunga" HorizontalContentAlignment="Center" />
+            <Button Grid.Row="5" Grid.Column="0"  x:Name="button_save_excel" Click="save_click" Content="Сохранить в Excel" Height="31" HorizontalAlignment="Center" VerticalAlignment="Top" Width="156" IsEnabled="False" FontSize="16" FontFamily="Tunga" HorizontalContentAlignment="Center" Margin="621,0,575,0" />
+            <Button Grid.Row="5" Grid.Column="0"  x:Name="button_save_text" Click="save_click_text" Content="Сохранить в блокнот" Height="31" HorizontalAlignment="Center" VerticalAlignment="Top" Width="223" IsEnabled="False" FontSize="16" FontFamily="Tunga" HorizontalContentAlignment="Center" Margin="313,0,816,0" />
         </Grid>
     </ScrollViewer>
 </Window>
